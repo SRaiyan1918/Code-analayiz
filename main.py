@@ -1,7 +1,7 @@
 import streamlit as st
 import ast
 
-def analyze_code():
+def analyze_code(code):
     try:
         # Parse the code into an abstract syntax tree (AST)
         tree = ast.parse(code)
@@ -47,7 +47,7 @@ def get_nesting_level(node, level=0):
 
 def calculate_complexity(node):
     try:
-        return len(ast.walk(node)) - len(node.args.args) - 1
+        return len(list(ast.walk(node))) - len(node.args.args) - 1
     except TypeError:
         return 0  # Skip 'generator' nodes
 
@@ -59,18 +59,17 @@ def calculate_readability(total_lines, max_nesting_level, num_functions):
 
 # Streamlit UI
 st.title('Code Metrics Analyzer')
-while(True):
-    code_input = st.text_area('Enter your Python code here:')
-    if st.button('Analyze'):
-        report = analyze_code(code_input)
-        if 'error' in report:
-            st.error(f"Error: {report['error']}\nMessage: {report['message']}")
-        else:
-            st.success("Analysis completed!")
-            st.write(f"Total lines of code: {report['total_lines']}")
-            st.write(f"Total characters: {report['total_characters']}")
-            st.write(f"Max nesting level: {report['max_nesting_level']}")
-            st.write("Function complexities:")
-            for func_name, complexity in report['function_complexities'].items():
-                st.write(f" - {func_name}: {complexity}")
-            st.write(f"Readability score: {report['readability_score']}")
+code_input = st.text_area('Enter your Python code here:')
+if st.button('Analyze'):
+    report = analyze_code(code_input)
+    if 'error' in report:
+        st.error(f"Error: {report['error']}\nMessage: {report['message']}")
+    else:
+        st.success("Analysis completed!")
+        st.write(f"Total lines of code: {report['total_lines']}")
+        st.write(f"Total characters: {report['total_characters']}")
+        st.write(f"Max nesting level: {report['max_nesting_level']}")
+        st.write("Function complexities:")
+        for func_name, complexity in report['function_complexities'].items():
+            st.write(f" - {func_name}: {complexity}")
+        st.write(f"Readability score: {report['readability_score']}")

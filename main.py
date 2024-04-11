@@ -59,18 +59,18 @@ def calculate_readability(total_lines, max_nesting_level, num_functions):
 
 # Streamlit UI
 st.title('Code Metrics Analyzer')
-
-code_input = st.text_area('Enter your Python code here:')
-if st.button('Analyze'):
-    report = analyze_code(code_input)
-    if 'error' in report:
-        st.error(f"Error: {report['error']}\nMessage: {report['message']}")
-    else:
-        st.success("Analysis completed!")
-        st.write(f"Total lines of code: {report['total_lines']}")
-        st.write(f"Total characters: {report['total_characters']}")
-        st.write(f"Max nesting level: {report['max_nesting_level']}")
-        st.write("Function complexities:")
-        for func_name, complexity in report['function_complexities'].items():
-            st.write(f" - {func_name}: {complexity}")
-        st.write(f"Readability score: {report['readability_score']}")
+while(True):
+    code_input = st.text_area('Enter your Python code here:')
+    if st.button('Analyze'):
+        report = analyze_code(code_input)
+        if 'error' in report:
+            st.error(f"Error: {report['error']}\nMessage: {report['message']}")
+        else:
+            st.success("Analysis completed!")
+            st.write(f"Total lines of code: {report['total_lines']}")
+            st.write(f"Total characters: {report['total_characters']}")
+            st.write(f"Max nesting level: {report['max_nesting_level']}")
+            st.write("Function complexities:")
+            for func_name, complexity in report['function_complexities'].items():
+                st.write(f" - {func_name}: {complexity}")
+            st.write(f"Readability score: {report['readability_score']}")
